@@ -78,7 +78,7 @@ class Agent:
         v = float('-inf')
         best_action = None
 
-        for action in state.get_legal_moves():
+        for action in UltimateTicTacToe.actions(state):
             result = UltimateTicTacToe.result(state, action)
             v2, a2 = self.min_value(result, a, b, depth + 1)
             if v2 > v:
@@ -102,7 +102,7 @@ class Agent:
         v = float('inf')
         best_action = None
 
-        for action in state.get_legal_moves():
+        for action in UltimateTicTacToe.actions(state):
             result = UltimateTicTacToe.result(state, action)
             v2, a2 = self.max_value(result, a, b, depth + 1)
             if v2 < v:
