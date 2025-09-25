@@ -70,7 +70,7 @@ class Agent:
         self.node_count += 1
 
         if UltimateTicTacToe.is_terminal(state):
-            return UltimateTicTacToe.utility(state, self.player), None
+            return self.eval(state, self.player), None
 
         if depth >= self.depth_limit:
             return self.eval(state, self.player), None
@@ -94,7 +94,7 @@ class Agent:
         self.node_count += 1
 
         if UltimateTicTacToe.is_terminal(state):
-            return UltimateTicTacToe.utility(state, self.player), None
+            return self.eval(state, self.player), None
 
         if depth >= self.depth_limit:
             return self.eval(state, self.player), None
