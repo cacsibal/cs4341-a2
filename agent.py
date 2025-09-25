@@ -96,6 +96,9 @@ class Agent:
         if UltimateTicTacToe.is_terminal(state):
             return UltimateTicTacToe.utility(state, self.player), None
 
+        if depth >= self.depth_limit:
+            return self.eval(state, self.player), None
+
         v = float('inf')
         best_action = None
 
