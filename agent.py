@@ -66,7 +66,7 @@ class Agent:
         value, move = self.max_value(state, float('-inf'), float('inf'), 0)
         return value, move, self.node_count
 
-    def max_value(self, state: Board, a: float, b: float, depth: int) -> Tuple[float, Tuple[int, int, int, int]]:
+    def max_value(self, state: Board, alpha: float, beta: float, depth: int) -> Tuple[float, Tuple[int, int, int, int]]:
         self.node_count += 1
 
         if UltimateTicTacToe.is_terminal(state):
@@ -80,17 +80,17 @@ class Agent:
 
         for action in UltimateTicTacToe.actions(state):
             result = UltimateTicTacToe.result(state, action)
-            v2, a2 = self.min_value(result, a, b, depth + 1)
+            v2, a2 = self.min_value(result, alpha, beta, depth + 1)
             if v2 > v:
                 v = v2
                 best_action = action
-                a = max(a, v)
+                alpha = max(alpha, v)
 
-            if v >= b:
+            if v >= beta:
                 break
         return v, best_action
 
-    def min_value(self, state: Board, a: float, b: float, depth: int) -> Tuple[float, Tuple[int, int, int, int]]:
+    def min_value(self, state: Board, alpha: float, beta: float, depth: int) -> Tuple[float, Tuple[int, int, int, int]]:
         self.node_count += 1
 
         if UltimateTicTacToe.is_terminal(state):
@@ -104,12 +104,12 @@ class Agent:
 
         for action in UltimateTicTacToe.actions(state):
             result = UltimateTicTacToe.result(state, action)
-            v2, a2 = self.max_value(result, a, b, depth + 1)
+            v2, a2 = self.max_value(result, alpha, beta, depth + 1)
             if v2 < v:
                 v = v2
                 best_action = action
-                b = min(b, v)
+                beta = min(beta, v)
 
-            if v <= a:
+            if v <= alpha:
                 break
         return v, best_action
