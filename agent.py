@@ -28,7 +28,9 @@ class Agent:
             eval (Callable[[Board, str], float]): A function that evaluates the desirability of a board state.
             depth_limit (int): The maximum search depth for the minimax algorithm with alpha-beta pruning.
         '''
-        raise(NotImplementedError)
+        self.player = player
+        self.eval = eval
+        self.depth_limit = depth_limit
 
     def search(self, state: Board) -> Tuple[float, Tuple[int, int, int, int], int]:
         '''
