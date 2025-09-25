@@ -16,7 +16,24 @@ def eval(state: Board, player: str) -> float:
     Returns:
         float: The heuristic score of the board state, where higher values favor the given player.
     '''
-    raise(NotImplementedError)
+    opponent = 'O' if player == 'X' else 'X'
+    score = 0
+    for sup_r in range(3):
+        for sup_c in range(3):
+            sub = state.cells[sup_r][sup_c]
+            if isinstance(sub, list):
+                player_count = sum(
+                    1 for sub_r in range(3) for sub_c in range(3) if sub[sub_r][sub_c] == player
+                )
+                opponent_count = sum(
+                    1 for sub_r in range(3) for sub_c in range(3) if sub[sub_r][sub_c] == opponent
+                )
+                score += (player_count ** 2) - (opponent_count ** 2)
+            elif sub == player:
+                score += 81
+            elif sub == opponent:
+                score -= 81
+    return score
 
 class Agent:
     def __init__(self, player: str, eval: Callable[[Board, str], float], depth_limit: int) -> None:
@@ -31,6 +48,7 @@ class Agent:
         self.player = player
         self.eval = eval
         self.depth_limit = depth_limit
+        self.node_count = 0
 
     def search(self, state: Board) -> Tuple[float, Tuple[int, int, int, int], int]:
         '''
@@ -44,4 +62,51 @@ class Agent:
             Tuple[int, int, int, int]: The best move (action) for the current player.
             int: The number of nodes evaluated during the search (equivalent to the total number of times the MAX-VALUE and MIN-VALUE functions were called).
         '''
-        raise(NotImplementedError)
+        self.node_count = 0
+        value, move = self.max_value(state, float('-inf'), float('inf'), 0)
+        return value, move, self.node_count
+
+    def max_value(self, state: Board, a: float, b: float, depth: int) -> Tuple[float, Tuple[int, int, int, int]]:
+        self.node_count += 1
+
+        if UltimateTicTacToe.is_terminal(state):
+            return UltimateTicTacToe.utility(state, self.player), None
+
+        if depth >= self.depth_limit:
+            return self.eval(state, self.player), None
+
+        v = float('-inf')
+        best_action = None
+
+        for action in state.get_legal_moves():
+            result = UltimateTicTacToe.result(state, action)
+            v2, a2 = self.min_value(result, a, b, depth + 1)
+            if v2 > v:
+                v = v2
+                best_action = action
+                a = max(a, v)
+
+            if v >= b:
+                break
+        return v, best_action
+
+    def min_value(self, state: Board, a: float, b: float, depth: int) -> Tuple[float, Tuple[int, int, int, int]]:
+        self.node_count += 1
+
+        if UltimateTicTacToe.is_terminal(state):
+            return UltimateTicTacToe.utility(state, self.player), None
+
+        v = float('inf')
+        best_action = None
+
+        for action in state.get_legal_moves():
+            result = UltimateTicTacToe.result(state, action)
+            v2, a2 = self.max_value(result, a, b, depth + 1)
+            if v2 < v:
+                v = v2
+                best_action = action
+                b = min(b, v)
+
+            if v <= a:
+                break
+        return v, best_action
