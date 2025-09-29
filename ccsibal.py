@@ -171,6 +171,7 @@ class Agent:
     def minimax(self, state: Board, alpha: float, beta: float, depth: int, is_maximizing: bool) -> Tuple[float, Tuple[int, int, int, int]]:
         '''
         minimax function that handles both MAX and MIN nodes based on is_maximizing flag.
+        uses canvas lecture notes for alpha-beta pruning implementation
 
         Parameters:
             state: Current board state
@@ -198,6 +199,7 @@ class Agent:
 
             v2, a2 = self.minimax(result, alpha, beta, depth + 1, not is_maximizing)
 
+            # similar branches based on min/max but hard to pull out cleanly
             if is_maximizing:
                 if v2 > best_value:
                     best_value = v2
