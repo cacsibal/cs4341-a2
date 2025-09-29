@@ -169,7 +169,7 @@ class Agent:
 
     def minimax(self, state: Board, alpha: float, beta: float, depth: int, is_maximizing: bool) -> Tuple[float, Tuple[int, int, int, int]]:
         '''
-        Unified minimax function that handles both MAX and MIN nodes based on is_maximizing flag.
+        minimax function that handles both MAX and MIN nodes based on is_maximizing flag.
 
         Parameters:
             state: Current board state

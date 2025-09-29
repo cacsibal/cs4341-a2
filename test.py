@@ -1,4 +1,4 @@
-from agent import Agent, eval
+from ccsibal import Agent, eval
 from board import Board
 from uttt import UltimateTicTacToe
 
