@@ -8,6 +8,7 @@ from collections.abc import Callable
 def eval(state: Board, player: str) -> float:
     '''
     https://boardgames.stackexchange.com/questions/49291/strategy-for-ultimate-tic-tac-toe
+    DISCLAIMER: used ai for bug fixes and to translate 'java-style' code to python
 
     Parameters:
         state (Board): The current game board.
